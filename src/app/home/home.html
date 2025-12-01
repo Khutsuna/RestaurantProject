@@ -1,0 +1,102 @@
+<div class="home-container">
+  <h1>Categories</h1>
+
+  <div class="hero-image">
+    <img src="assets/photo-1675150277436-9c7348972c11.avif" alt="Restaurant Hero">
+    <div class="hero-tagline">
+      <p>Fast and efficient, online ordering you must try.</p>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="categories">
+    <div class="category-list">
+      <button 
+        class="category-btn" 
+        [class.active]="selectedCategoryId === null"
+        (click)="selectCategory(null)">
+        All
+      </button>
+      @for (category of categories$ | async; track category.id) {
+        <button 
+          class="category-btn" 
+          [class.active]="selectedCategoryId === category.id"
+          (click)="selectCategory(category.id)">
+          {{ category.name }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <!-- Filters -->
+      <div class="filters">
+        <h3>Filters</h3>
+        <div class="filter-group">
+          <div class="spiciness-filter">
+            <label>Spiciness Level: {{ filterSpiciness === -1 || filterSpiciness === null ? 'All' : filterSpiciness }}</label>
+            <input 
+              type="range" 
+              min="-1" 
+              max="4" 
+              step="1" 
+              [(ngModel)]="filterSpiciness" 
+              class="spiciness-slider">
+
+          </div>
+          
+          <label>
+            <input type="checkbox" [(ngModel)]="filterVegetarian">
+            Vegetarian
+          </label>
+          <label>
+            <input type="checkbox" [(ngModel)]="filterNuts">
+            Contains Nuts
+          </label>
+          <button (click)="applyFilters()" class="apply-btn">Apply Filters</button>
+          <button (click)="clearFilters()">Clear Filters</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Products -->
+    <div class="products">
+    @if (products$ | async; as products) {
+      <div class="product-grid">
+        @for (product of filterProductsByCategory(products); track product.id) {
+          <div class="product-card">
+            <img [src]="product.image" [alt]="product.name" class="product-image">
+            <div class="product-info">
+              <h3>{{ product.name }}</h3>
+              @if (product.description) {
+                <p class="description">{{ product.description }}</p>
+              }
+              <div class="spiciness">
+                <span class="spiciness-label">Spiciness: {{ product.spiciness ?? 0 }}</span>
+              </div>
+              <div class="product-attributes">
+                <div class="attribute" [class.checked]="product.vegeterian">
+                  <span class="checkbox">{{ product.vegeterian ? '✓' : '✗' }}</span>
+                  <span class="attribute-label">Vegetarian</span>
+                </div>
+                <div class="attribute" [class.checked]="product.nuts">
+                  <span class="checkbox">{{ product.nuts ? '✓' : '✗' }}</span>
+                  <span class="attribute-label">Contains Nuts</span>
+                </div>
+              </div>
+              <div class="price-cart-row">
+                <p class="price">${{ product.price.toFixed(2) }}</p>
+                <button class="add-to-cart-btn" (click)="addToCart(product)">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <p>No products found.</p>
+        }
+      </div>
+    }
+    </div>
+  </div>
+</div>
