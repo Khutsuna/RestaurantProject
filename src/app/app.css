@@ -32,11 +32,22 @@
   margin: 0;
   font-size: 55px;
   font-weight: bolder;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logo h2 {
+  margin: 0;
 }
 
 .logo2 {
-  position: relative;
-  left: 62px;
   margin: 0;
   font-size: 28px;
   font-weight: 125;

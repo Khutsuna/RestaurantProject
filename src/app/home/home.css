@@ -483,6 +483,10 @@ h3 {
     top: 20vh;
   }
 
+  .hero-tagline {
+    display: none;
+  }
+
   .categories {
     margin-top: 25vh;
     height: auto;
